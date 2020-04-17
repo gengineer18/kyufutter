@@ -47,6 +47,7 @@
             :counter="20"
             v-model="form2nd.text"
             @click="initForm2nd()"
+            v-if="formLength >= 2"
             label="やりたいことその2"
             color="primary"
           >
@@ -55,6 +56,7 @@
             :counter="20"
             v-model="form3rd.text"
             @click="initForm3rd()"
+            v-if="formLength >= 3"
             label="やりたいことその3"
             color="primary"
           >
@@ -63,10 +65,10 @@
 
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary" small dark>
+          <v-btn @click="addForm" color="primary" small dark>
             <v-icon dark left>mdi-plus</v-icon>やりたいこと追加
           </v-btn>
-          <v-btn color="primary" small dark>
+          <v-btn @click="removeForm" color="primary" small dark>
             <v-icon dark left>mdi-minus</v-icon>やりたいこと削除
           </v-btn>
           <v-spacer />
@@ -121,6 +123,12 @@ export default {
         this.form3rd.text = ''
         this.form3rd.init = true
       }
+    },
+    addForm() {
+      if (this.formLength < 3) this.formLength++
+    },
+    removeForm() {
+      if (this.formLength > 1) this.formLength--
     }
   }
 }
