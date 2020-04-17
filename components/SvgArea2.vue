@@ -31,6 +31,9 @@
     >
       {{ text2nd }}
     </foreignObject>
+    <text :height="height" width="100" x="125" y="90" font-size="8px">
+      #10万円こう使う
+    </text>
   </svg>
 </template>
 
