@@ -6,8 +6,7 @@
           <p>
             日本政府が国民1人あたり10万円を給付する方針を固めたようです。<br />
             皆さんは10万円給付されたら何を買いたいですか？<br />
-            何をしたいですか？<br />
-            COVID-19の早期収束を願います。
+            何をしたいですか？
           </p>
           <hr class="my-3" />
           <div v-if="formLength == 1">
@@ -61,21 +60,51 @@
 
         <v-card-actions>
           <v-spacer />
-          <v-btn @click="addForm" color="primary" small dark>
+          <v-btn
+            @click="addForm"
+            v-if="formLength < 3"
+            color="success"
+            outlined
+            small
+            dark
+          >
             <v-icon dark left>mdi-plus</v-icon>やりたいこと追加
           </v-btn>
-          <v-btn @click="removeForm" color="primary" small dark>
+          <v-btn
+            @click="removeForm"
+            v-if="formLength > 1"
+            color="error"
+            outlined
+            small
+            dark
+          >
             <v-icon dark left>mdi-minus</v-icon>やりたいこと削除
           </v-btn>
           <v-spacer />
         </v-card-actions>
         <v-card-actions>
           <v-spacer />
-          <v-btn @click="submit()" color="primary" large dark>
-            <v-icon dark left>mdi-twitter</v-icon>こう使う！！
+          <v-btn @click="submit()" color="warning" large dark>
+            <v-icon dark left>mdi-currency-jpy</v-icon>
+            <strong>こう使う！！</strong>
           </v-btn>
           <v-spacer />
         </v-card-actions>
+        <v-card-actions v-if="tweet">
+          <v-spacer />
+          <v-btn @click="submit()" color="primary" large dark>
+            <v-icon dark left>mdi-twitter</v-icon>
+            <strong>ここからツイート</strong>
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+        <v-card-text>
+          <hr class="my-3" />
+          <p>
+            COVID-19の早期収束、一人でも少ない被害を願います。<br />
+            また、この経済施策で少しでも日本経済が改善することを望みます。
+          </p>
+        </v-card-text>
       </v-card>
     </v-flex>
   </v-layout>
@@ -111,7 +140,8 @@ export default {
         if (!value) value = ''
         return value.length <= 15 || '15文字以内で入力してください'
       },
-      counter: 15
+      counter: 15,
+      tweet: false
     }
   },
   methods: {
@@ -151,6 +181,7 @@ export default {
         // すべてのバリデーションが通過したときのみ
         // if文の中に入る
         console.log('true')
+        this.tweet = true
       } else {
         console.log('false')
       }

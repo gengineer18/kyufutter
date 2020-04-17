@@ -6,9 +6,12 @@
       width="191"
       height="100"
       fill="#fefefe"
-      stroke="#00acee"
+      stroke="#FFB300"
       stroke-width="4"
     ></rect>
+    <text :height="height" width="100" x="4" y="12" font-size="8px">
+      10万円給付ったー
+    </text>
     <foreignObject
       :width="width"
       :height="height"
@@ -16,7 +19,7 @@
       :style="style"
       requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
       x="4"
-      y="7"
+      y="20"
     >
       {{ text1st }}
     </foreignObject>
@@ -27,7 +30,7 @@
       :style="style"
       requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
       x="4"
-      y="37"
+      y="40"
     >
       {{ text2nd }}
     </foreignObject>
@@ -38,7 +41,7 @@
       :style="style"
       requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
       x="4"
-      y="67"
+      y="60"
     >
       {{ text3rd }}
     </foreignObject>

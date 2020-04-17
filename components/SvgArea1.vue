@@ -6,9 +6,12 @@
       width="191"
       height="100"
       fill="#fefefe"
-      stroke="#00acee"
+      stroke="#FFB300"
       stroke-width="4"
     ></rect>
+    <text :height="height" width="100" x="4" y="12" font-size="8px">
+      10万円給付ったー
+    </text>
     <foreignObject
       :width="width"
       :height="height"
