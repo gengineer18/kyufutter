@@ -7,60 +7,56 @@
             日本政府が国民1人あたり10万円を給付する方針を固めたようです。<br />
             皆さんは10万円給付されたら何を買いたいですか？<br />
             何をしたいですか？<br />
-            共有してみよう！<br />
             COVID-19の早期収束を願います。
           </p>
           <hr class="my-3" />
-          <div>
-            <svg ref="svgArea" viewBox="0 0 191 100">
-              <rect
-                x="0"
-                y="0"
-                width="191"
-                height="100"
-                fill="#fff"
-                stroke="#12b886"
-                stroke-width="4"
-              ></rect>
-              <foreignObject
-                requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
-                width="188"
-                height="100"
-                x="4"
-                y="40"
-                font-size="12px"
-                style="line-height:1rem;"
-              >
-                {{ form1st.text }}
-              </foreignObject>
-            </svg>
+          <div v-if="formLength == 1">
+            <svg-area-1 :text1st="form1st.text" />
           </div>
-          <v-text-field
-            :counter="20"
-            v-model="form1st.text"
-            @click="initForm1st()"
-            label="共有してみよう！やりたいことその1"
-            color="primary"
-          >
-          </v-text-field>
-          <v-text-field
-            :counter="20"
-            v-model="form2nd.text"
-            @click="initForm2nd()"
-            v-if="formLength >= 2"
-            label="やりたいことその2"
-            color="primary"
-          >
-          </v-text-field>
-          <v-text-field
-            :counter="20"
-            v-model="form3rd.text"
-            @click="initForm3rd()"
-            v-if="formLength >= 3"
-            label="やりたいことその3"
-            color="primary"
-          >
-          </v-text-field>
+          <div v-if="formLength == 2">
+            <svg-area-2 :text1st="form1st.text" :text2nd="form2nd.text" />
+          </div>
+          <div v-if="formLength == 3">
+            <svg-area-3
+              :text1st="form1st.text"
+              :text2nd="form2nd.text"
+              :text3rd="form3rd.text"
+            />
+          </div>
+          <v-form ref="form">
+            <v-text-field
+              :counter="counter"
+              v-model="form1st.text"
+              :rules="[limit_length]"
+              @click="initForm1st()"
+              label="共有してみよう！やりたいことその1"
+              clearable
+              color="primary"
+            >
+            </v-text-field>
+            <v-text-field
+              :counter="counter"
+              v-model="form2nd.text"
+              :rules="[limit_length]"
+              @click="initForm2nd()"
+              v-if="formLength >= 2"
+              label="やりたいことその2"
+              clearable
+              color="primary"
+            >
+            </v-text-field>
+            <v-text-field
+              :counter="counter"
+              v-model="form3rd.text"
+              :rules="[limit_length]"
+              @click="initForm3rd()"
+              v-if="formLength >= 3"
+              label="やりたいことその3"
+              clearable
+              color="primary"
+            >
+            </v-text-field>
+          </v-form>
         </v-card-text>
 
         <v-card-actions>
@@ -75,8 +71,8 @@
         </v-card-actions>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire" large dark>
-            <v-icon dark left>mdi-twitter</v-icon>Twitterでシェアする
+          <v-btn @click="submit()" color="primary" large dark>
+            <v-icon dark left>mdi-twitter</v-icon>こう使う！！
           </v-btn>
           <v-spacer />
         </v-card-actions>
@@ -86,8 +82,16 @@
 </template>
 
 <script>
+import SvgArea1 from '@/components/SvgArea1'
+import SvgArea2 from '@/components/SvgArea2'
+import SvgArea3 from '@/components/SvgArea3'
 const defaultMessage = '10万円どう使う？'
 export default {
+  components: {
+    SvgArea1,
+    SvgArea2,
+    SvgArea3
+  },
   data() {
     return {
       formLength: 1,
@@ -102,7 +106,12 @@ export default {
       form3rd: {
         init: false,
         text: defaultMessage
-      }
+      },
+      limit_length: (value) => {
+        if (!value) value = ''
+        return value.length <= 15 || '15文字以内で入力してください'
+      },
+      counter: 15
     }
   },
   methods: {
@@ -128,7 +137,23 @@ export default {
       if (this.formLength < 3) this.formLength++
     },
     removeForm() {
+      switch (this.formLength) {
+        case 2:
+          this.form2nd.text = defaultMessage
+          break
+        case 3:
+          this.form3rd.text = defaultMessage
+      }
       if (this.formLength > 1) this.formLength--
+    },
+    submit() {
+      if (this.$refs.form.validate()) {
+        // すべてのバリデーションが通過したときのみ
+        // if文の中に入る
+        console.log('true')
+      } else {
+        console.log('false')
+      }
     }
   }
 }
