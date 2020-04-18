@@ -208,7 +208,7 @@
         </v-card-actions>
         <v-card-actions v-if="tweet">
           <v-spacer />
-          <v-btn @click="submit()" color="primary" large dark>
+          <v-btn @click="tweet()" color="primary" large dark>
             <v-icon dark left>mdi-twitter</v-icon>
             <strong>ここからツイート</strong>
           </v-btn>
@@ -281,7 +281,7 @@ export default {
         return value.length <= 15 || '15文字以内で入力してください'
       },
       counter: 15,
-      tweet: false,
+      canTweet: false,
       width: 1184.4,
       height: 126,
       fontsize: '74px',
@@ -321,8 +321,8 @@ export default {
       }
       if (this.formLength > 1) this.formLength--
     },
-    submit() {
-      if (this.$refs.form.validate()) {
+    tweet() {
+      if (this.$refs.form.validate() && !this.docId) {
         // すべてのバリデーションが通過したときのみ
         // if文の中に入る
         console.log('true')
@@ -353,7 +353,7 @@ export default {
             form3rdText: this.form3rd.text
           })
         })
-        this.tweet = true
+        this.canTweet = true
       } else {
         console.log('false')
       }
