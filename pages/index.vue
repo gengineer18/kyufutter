@@ -285,7 +285,8 @@ export default {
       width: 1184.4,
       height: 126,
       fontsize: '74px',
-      style: 'style=line-height:74px;'
+      style: 'style=line-height:74px;',
+      docId: ''
     }
   },
   methods: {
@@ -334,15 +335,17 @@ export default {
       if (this.$refs.form.validate()) {
         svg2imageData(this.$refs.svgArea, async (data) => {
           const storageRef = firebase.storage().ref()
-          const docId = db.collection('posts').doc().id
-          const fileRef = storageRef.child(`${docId}.png`)
+          if (!this.docId) {
+            this.docId = db.collection('posts').doc().id
+          }
+          const fileRef = storageRef.child(`${this.docId}.png`)
 
           // Firebase Cloud Storageにアップロード
           await fileRef.putString(data, 'data_url')
           const url = await fileRef.getDownloadURL()
 
           // Firestoreに保存しておく
-          const card = db.collection('posts').doc(docId)
+          const card = db.collection('posts').doc(this.docId)
           await card.set({
             url,
             form1stText: this.form1st.text,
