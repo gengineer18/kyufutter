@@ -1,32 +1,24 @@
 <template>
-  <svg ref="svgArea" viewBox="0 0 191 100">
+  <span>
     <rect
       x="0"
       y="0"
-      width="191"
-      height="100"
+      width="1200"
+      height="630"
       fill="#fefefe"
       stroke="#FFB300"
-      stroke-width="4"
+      stroke-width="25"
     ></rect>
-    <text :height="height" width="100" x="4" y="12" font-size="8px">
+    <text :height="height" width="630" x="25" y="76" font-size="50px">
       10万円給付ったー
     </text>
-    <foreignObject
-      :width="width"
-      :height="height"
-      :font-size="fontsize"
-      :style="style"
-      requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
-      x="4"
-      y="40"
-    >
+    <text :height="height" :width="width" :font-size="fontsize" x="25" y="350">
       {{ text1st }}
-    </foreignObject>
-    <text :height="height" width="100" x="125" y="90" font-size="8px">
+    </text>
+    <text :height="height" width="100" x="788" y="570" font-size="50px">
       #10万円こう使う
     </text>
-  </svg>
+  </span>
 </template>
 
 <script>

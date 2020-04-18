@@ -10,32 +10,35 @@
           </p>
           <hr class="my-3" />
           <div v-if="formLength == 1">
-            <!-- <svg-area-1 ref="svgArea" :text1st="form1st.text" /> -->
-            <svg ref="svgArea" viewBox="0 0 191 100">
+            <svg ref="svgArea" viewBox="0 0 1200 630">
               <rect
                 x="0"
                 y="0"
-                width="191"
-                height="100"
+                width="1200"
+                height="630"
                 fill="#fefefe"
                 stroke="#FFB300"
-                stroke-width="4"
+                stroke-width="25"
               ></rect>
-              <text :height="height" width="100" x="4" y="12" font-size="8px">
+              <text :height="height" width="630" x="25" y="76" font-size="50px">
                 10万円給付ったー
               </text>
-              <foreignObject
-                :width="width"
+              <text
                 :height="height"
+                :width="width"
                 :font-size="fontsize"
-                :style="style"
-                requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
-                x="4"
-                y="40"
+                x="25"
+                y="350"
               >
                 {{ form1st.text }}
-              </foreignObject>
-              <text :height="height" width="100" x="125" y="90" font-size="8px">
+              </text>
+              <text
+                :height="height"
+                width="100"
+                x="788"
+                y="570"
+                font-size="50px"
+              >
                 #10万円こう使う
               </text>
             </svg>
@@ -158,12 +161,12 @@ if (!firebase.apps.length) {
 const db = firebase.firestore()
 const svg2imageData = (svgElement, successCallback, errorCallback) => {
   const canvas = document.createElement('canvas')
-  canvas.width = 191
-  canvas.height = 100
+  canvas.width = 1200
+  canvas.height = 630
   const ctx = canvas.getContext('2d')
   const image = new Image()
   image.onload = () => {
-    ctx.drawImage(image, 0, 0, 191, 100)
+    ctx.drawImage(image, 0, 0, 1200, 630)
     successCallback(canvas.toDataURL())
   }
   image.onerror = (e) => {
@@ -202,10 +205,10 @@ export default {
       },
       counter: 15,
       tweet: false,
-      width: 188,
-      height: 20,
-      fontsize: '12px',
-      style: 'style=line-height:12px;'
+      width: 1184.4,
+      height: 126,
+      fontsize: '74px',
+      style: 'style=line-height:74px;'
     }
   },
   methods: {
