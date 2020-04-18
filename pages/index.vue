@@ -190,11 +190,11 @@ export default {
       },
       form2nd: {
         init: false,
-        text: defaultMessage
+        text: ''
       },
       form3rd: {
         init: false,
-        text: defaultMessage
+        text: ''
       },
       limit_length: (value) => {
         if (!value) value = ''
@@ -233,10 +233,10 @@ export default {
     removeForm() {
       switch (this.formLength) {
         case 2:
-          this.form2nd.text = defaultMessage
+          this.form2nd.text = ''
           break
         case 3:
-          this.form3rd.text = defaultMessage
+          this.form3rd.text = ''
       }
       if (this.formLength > 1) this.formLength--
     },
@@ -254,22 +254,22 @@ export default {
       if (this.$refs.form.validate()) {
         svg2imageData(this.$refs.svgArea, async (data) => {
           const storageRef = firebase.storage().ref()
-          const fileRef = storageRef.child(`test.png`)
+          const docId = db.collection('posts').doc().id
+          const fileRef = storageRef.child(`${docId}.png`)
 
           // Firebase Cloud Storageにアップロード
           await fileRef.putString(data, 'data_url')
           const url = await fileRef.getDownloadURL()
-          console.log(url)
 
           // Firestoreに保存しておく
-          const card = db.collection('cards').doc('test')
+          const card = db.collection('posts').doc(docId)
           await card.set({
             url,
-            message: this.form1st.text
+            form1stText: this.form1st.text,
+            form2ndText: this.form2nd.text,
+            form3rdText: this.form3rd.text
           })
         })
-
-        console.log('true')
         this.tweet = true
       } else {
         console.log('false')
