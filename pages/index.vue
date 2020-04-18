@@ -208,10 +208,12 @@
         </v-card-actions>
         <v-card-actions v-if="canTweet">
           <v-spacer />
-          <v-btn @click="tweet()" color="primary" large dark>
-            <v-icon dark left>mdi-twitter</v-icon>
-            <strong>ここからツイート</strong>
-          </v-btn>
+          <a :href="twitterURL" target="_blank" rel="nofollow">
+            <v-btn color="primary" large dark>
+              <v-icon dark left>mdi-twitter</v-icon>
+              <strong>ここからツイート</strong>
+            </v-btn>
+          </a>
           <v-spacer />
         </v-card-actions>
         <v-card-text>
@@ -289,6 +291,20 @@ export default {
       docId: ''
     }
   },
+  computed: {
+    twitterURL() {
+      console.log('true')
+      const imageId = this.docId
+      const url = `https://kyufutter10.web.app/${imageId}`
+      const comment = encodeURIComponent(
+        `${this.form1st.text} ${this.form2nd.text} ${this.form3rd.text}`
+      )
+      const hashtag = encodeURIComponent(
+        '10万円給付ったー,10万円こう使う,STAYHOME'
+      )
+      return `https://twitter.com/intent/tweet?url=${url}&text=${comment}&hashtags=${hashtag}`
+    }
+  },
   methods: {
     initForm1st() {
       if (!this.form1st.init) {
@@ -321,22 +337,13 @@ export default {
       }
       if (this.formLength > 1) this.formLength--
     },
-    tweet() {
-      if (this.$refs.form.validate() && !this.docId) {
-        // すべてのバリデーションが通過したときのみ
-        // if文の中に入る
-        console.log('true')
-        this.tweet = true
-      } else {
-        console.log('false')
-      }
-    },
     create() {
       if (this.$refs.form.validate()) {
         svg2imageData(this.$refs.svgArea, async (data) => {
           const storageRef = firebase.storage().ref()
           if (!this.docId) {
             this.docId = db.collection('posts').doc().id
+            console.log(this.docId)
           }
           const fileRef = storageRef.child(`${this.docId}.png`)
 
