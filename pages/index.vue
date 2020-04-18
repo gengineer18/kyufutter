@@ -44,14 +44,99 @@
             </svg>
           </div>
           <div v-if="formLength == 2">
-            <svg-area-2 :text1st="form1st.text" :text2nd="form2nd.text" />
+            <svg ref="svgArea" viewBox="0 0 1200 630">
+              <rect
+                x="0"
+                y="0"
+                width="1200"
+                height="630"
+                fill="#fefefe"
+                stroke="#FFB300"
+                stroke-width="25"
+              ></rect>
+              <text :height="height" width="630" x="25" y="76" font-size="50px">
+                10万円給付ったー
+              </text>
+              <text
+                :height="height"
+                :width="width"
+                :font-size="fontsize"
+                x="25"
+                y="280"
+              >
+                {{ form1st.text }}
+              </text>
+              <text
+                :height="height"
+                :width="width"
+                :font-size="fontsize"
+                x="25"
+                y="440"
+              >
+                {{ form2nd.text }}
+              </text>
+              <text
+                :height="height"
+                width="100"
+                x="788"
+                y="540"
+                font-size="50px"
+              >
+                #10万円こう使う
+              </text>
+            </svg>
           </div>
           <div v-if="formLength == 3">
-            <svg-area-3
-              :text1st="form1st.text"
-              :text2nd="form2nd.text"
-              :text3rd="form3rd.text"
-            />
+            <svg ref="svgArea" viewBox="0 0 1200 630">
+              <rect
+                x="0"
+                y="0"
+                width="1200"
+                height="630"
+                fill="#fefefe"
+                stroke="#FFB300"
+                stroke-width="25"
+              ></rect>
+              <text :height="height" width="630" x="25" y="76" font-size="50px">
+                10万円給付ったー
+              </text>
+              <text
+                :height="height"
+                :width="width"
+                :font-size="fontsize"
+                x="25"
+                y="240"
+              >
+                {{ form1st.text }}
+              </text>
+              <text
+                :height="height"
+                :width="width"
+                :font-size="fontsize"
+                x="25"
+                y="360"
+              >
+                {{ form2nd.text }}
+              </text>
+              <text
+                :height="height"
+                :width="width"
+                :font-size="fontsize"
+                x="25"
+                y="480"
+              >
+                {{ form3rd.text }}
+              </text>
+              <text
+                :height="height"
+                width="100"
+                x="788"
+                y="570"
+                font-size="50px"
+              >
+                #10万円こう使う
+              </text>
+            </svg>
           </div>
           <v-form ref="form">
             <v-text-field
@@ -142,9 +227,6 @@
 </template>
 
 <script>
-// import SvgArea1 from '@/components/SvgArea1'
-import SvgArea2 from '@/components/SvgArea2'
-import SvgArea3 from '@/components/SvgArea3'
 import firebase from 'firebase'
 
 const defaultMessage = '10万円どう使う？'
@@ -179,11 +261,6 @@ const svg2imageData = (svgElement, successCallback, errorCallback) => {
 }
 
 export default {
-  components: {
-    // SvgArea1,
-    SvgArea2,
-    SvgArea3
-  },
   data() {
     return {
       formLength: 1,
