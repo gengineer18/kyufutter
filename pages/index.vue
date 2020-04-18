@@ -206,7 +206,7 @@
           </v-btn>
           <v-spacer />
         </v-card-actions>
-        <v-card-actions v-if="tweet">
+        <v-card-actions v-if="canTweet">
           <v-spacer />
           <v-btn @click="tweet()" color="primary" large dark>
             <v-icon dark left>mdi-twitter</v-icon>
