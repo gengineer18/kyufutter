@@ -10,7 +10,7 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-footer app hide-on-scroll>
+    <v-footer app>
       <span>&copy; 2019 Woods At Web</span>
     </v-footer>
   </v-app>
