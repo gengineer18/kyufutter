@@ -8,6 +8,9 @@
             皆さんは10万円給付されたら何を買いたいですか？<br />
             何をしたいですか？
           </p>
+          <div style="text-align:center;">
+            <img src="~assets/fuutou_yen.png" width="150" height="150" />
+          </div>
           <hr class="my-3" />
           <div v-if="formLength == 1">
             <svg ref="svgArea" viewBox="0 0 1200 630">
@@ -295,7 +298,7 @@ export default {
     twitterURL() {
       console.log('true')
       const imageId = this.docId
-      const url = `https://kyufutter10.web.app/${imageId}`
+      const url = `https://kyufutter10.web.app/share/${imageId}`
       const comment = encodeURIComponent(
         `${this.form1st.text} ${this.form2nd.text} ${this.form3rd.text}`
       )
@@ -354,6 +357,7 @@ export default {
           // Firestoreに保存しておく
           const card = db.collection('posts').doc(this.docId)
           await card.set({
+            docId: this.docId,
             url,
             form1stText: this.form1st.text,
             form2ndText: this.form2nd.text,

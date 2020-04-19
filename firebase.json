@@ -14,7 +14,7 @@
     ],
     "rewrites": [
       {
-        "source": "/bigben", "function": "bigben"
+        "source": "/share/**", "function": "share"
       },
       {
         "source": "**",
