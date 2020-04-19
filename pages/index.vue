@@ -8,6 +8,9 @@
             皆さんは10万円給付されたら何を買いたいですか？<br />
             何をしたいですか？
           </p>
+          <div style="text-align:center;">
+            <img src="~assets/fuutou_yen.png" width="150" height="150" />
+          </div>
           <hr class="my-3" />
           <div v-if="formLength == 1">
             <svg ref="svgArea" viewBox="0 0 1200 630">
@@ -208,10 +211,17 @@
         </v-card-actions>
         <v-card-actions v-if="canTweet">
           <v-spacer />
-          <v-btn @click="tweet()" color="primary" large dark>
-            <v-icon dark left>mdi-twitter</v-icon>
-            <strong>ここからツイート</strong>
-          </v-btn>
+          <a
+            :href="twitterURL"
+            target="_blank"
+            onClick="ga('send','event','button','click','tweet')"
+            rel="nofollow"
+          >
+            <v-btn color="primary" large dark>
+              <v-icon dark left>mdi-twitter</v-icon>
+              <strong>ここからツイート</strong>
+            </v-btn>
+          </a>
           <v-spacer />
         </v-card-actions>
         <v-card-text>
@@ -227,7 +237,10 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/storage'
+import 'firebase/firestore'
+import 'firebase/analytics'
 
 const defaultMessage = '10万円どう使う？'
 const config = {
@@ -235,7 +248,9 @@ const config = {
   authDomain: process.env.AUTH_DOMAIN,
   databaseURL: process.env.DATABASE_URL,
   storageBucket: process.env.STORAGE_BUCKET,
-  projectId: process.env.PROJECT_ID
+  projectId: process.env.PROJECT_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID
 }
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
@@ -289,27 +304,55 @@ export default {
       docId: ''
     }
   },
+  computed: {
+    twitterURL() {
+      const imageId = this.docId
+      const url = `https://kyufutter10.web.app/share/${imageId}`
+      let comment
+      if (this.formLength === 1) {
+        comment = encodeURIComponent(`・${this.form1st.text}`)
+      }
+      if (this.formLength === 2) {
+        comment = encodeURIComponent(
+          `・${this.form1st.text} ・${this.form2nd.text}`
+        )
+      }
+      if (this.formLength === 3) {
+        comment = encodeURIComponent(
+          `・${this.form1st.text} ・${this.form2nd.text} ・${this.form3rd.text}`
+        )
+      }
+      const hashtag = encodeURIComponent(
+        '10万円給付ったー,10万円こう使う,STAYHOME'
+      )
+      return `https://twitter.com/intent/tweet?url=${url}&text=${comment}&hashtags=${hashtag}`
+    }
+  },
   methods: {
     initForm1st() {
       if (!this.form1st.init) {
         this.form1st.text = ''
         this.form1st.init = true
       }
+      this.canTweet = false
     },
     initForm2nd() {
       if (!this.form2nd.init) {
         this.form2nd.text = ''
         this.form2nd.init = true
       }
+      this.canTweet = false
     },
     initForm3rd() {
       if (!this.form3rd.init) {
         this.form3rd.text = ''
         this.form3rd.init = true
       }
+      this.canTweet = false
     },
     addForm() {
       if (this.formLength < 3) this.formLength++
+      this.canTweet = false
     },
     removeForm() {
       switch (this.formLength) {
@@ -320,16 +363,7 @@ export default {
           this.form3rd.text = ''
       }
       if (this.formLength > 1) this.formLength--
-    },
-    tweet() {
-      if (this.$refs.form.validate() && !this.docId) {
-        // すべてのバリデーションが通過したときのみ
-        // if文の中に入る
-        console.log('true')
-        this.tweet = true
-      } else {
-        console.log('false')
-      }
+      this.canTweet = false
     },
     create() {
       if (this.$refs.form.validate()) {
@@ -347,15 +381,17 @@ export default {
           // Firestoreに保存しておく
           const card = db.collection('posts').doc(this.docId)
           await card.set({
+            docId: this.docId,
             url,
             form1stText: this.form1st.text,
             form2ndText: this.form2nd.text,
-            form3rdText: this.form3rd.text
+            form3rdText: this.form3rd.text,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
           })
         })
         this.canTweet = true
       } else {
-        console.log('false')
+        console.error('create error')
       }
     }
   }
